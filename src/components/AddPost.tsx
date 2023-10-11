@@ -25,6 +25,7 @@ const AddPost: FC<SetPostsProps> = ({ setPosts }) => {
         author: {
           id: "1",
           name: "Vladimir",
+          email: "facke@email",
           avatar:
             "https://parfum-asmodeus.ru/wp-content/uploads/a/1/7/a179b5d0cee30059a54aad7fe3c892ca.jpeg",
         },

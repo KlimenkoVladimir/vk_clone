@@ -10,16 +10,19 @@ import { FC } from "react";
 
 import { IPost } from "../types";
 import { cols } from "../data";
+import { useAuth } from "./hooks/useAuth";
 
 interface PostsProps {
   posts: IPost[];
 }
 
 const Posts: FC<PostsProps> = ({ posts }) => {
+  const { user } = useAuth();
   return (
     <Box sx={{ mt: 3 }}>
       {posts.map((post) => (
         <Box
+          key={post.data}
           sx={{
             mt: 1,
             px: 3,
@@ -32,7 +35,7 @@ const Posts: FC<PostsProps> = ({ posts }) => {
           <Button onClick={() => {}} sx={{ color: "black" }}>
             <Avatar src={post.author.avatar}></Avatar>
             <Typography variant="h6" sx={{ ml: 4 }}>
-              {post.author.name}
+              {user?.name || post.author.name}
             </Typography>
             <Typography variant="subtitle2" sx={{ ml: 2 }}>
               {post.data}
@@ -59,29 +62,6 @@ const Posts: FC<PostsProps> = ({ posts }) => {
               ))}
             </ImageList>
           )}
-          {/* <ImageList sx={{ mt: 2 }} variant="quilted" cols={2}>
-            <ImageListItem cols={2}>
-              <img
-                src="https://mykaleidoscope.ru/x/uploads/posts/2022-09/1663432147_8-mykaleidoscope-ru-p-dostoprimechatelnosti-yaponii-fudziyama-pi-8.jpg"
-                alt=" "
-                loading="lazy"
-              />
-            </ImageListItem>
-            <ImageListItem cols={1}>
-              <img
-                src="https://webpulse.imgsmail.ru/imgpreview?mb=webpulse&key=pulse_cabinet-image-cc1b1357-a8ce-494b-b57a-e0e3ecceecad"
-                alt=" "
-                loading="lazy"
-              />
-            </ImageListItem>
-            <ImageListItem cols={1}>
-              <img
-                src="https://i.mycdn.me/i?r=AzEPZsRbOZEKgBhR0XGMT1RkmZEXkMbapSVAlF74OQB1ZqaKTM5SRkZCeTgDn6uOyic"
-                alt=" "
-                loading="lazy"
-              />
-            </ImageListItem>
-          </ImageList> */}
         </Box>
       ))}
     </Box>

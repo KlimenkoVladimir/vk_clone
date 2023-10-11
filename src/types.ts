@@ -7,6 +7,7 @@ export type TypeSetState<T> = Dispatch<SetStateAction<T>>;
 export interface IUser {
   id: string;
   name: string;
+  email: string;
   avatar?: string;
   isOnline?: boolean;
 }

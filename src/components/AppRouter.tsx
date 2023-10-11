@@ -1,17 +1,24 @@
-import React, { FC } from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { FC, useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { routes } from "../routes";
+import { useAuth } from "./hooks/useAuth";
 
 const AppRouter: FC = () => {
-  const isAuth = true;
+  const { user } = useAuth();
 
   return (
     <Routes>
       {routes.map((route) => {
-        if (route.auth && !isAuth) {
+        if (route.auth && !user) {
           return null;
         }
-        return <Route path={route.path} element={route.element}></Route>;
+        return (
+          <Route
+            key={route.path}
+            path={route.path}
+            element={route.element}
+          ></Route>
+        );
       })}
     </Routes>
   );

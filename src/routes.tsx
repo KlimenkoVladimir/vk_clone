@@ -1,10 +1,11 @@
 import { ReactElement } from "react";
 import Home from "./components/pages/Home";
 import Friends from "./components/pages/Friends";
-import Login from "./components/pages/Login";
+import Auth from "./components/pages/Auth";
 import Messages from "./components/pages/Messages";
 import Profile from "./components/pages/Profile";
 import News from "./components/pages/News";
+import Edit from "./components/pages/Edit";
 
 interface Iroute {
   path: string;
@@ -24,13 +25,18 @@ export const routes: Iroute[] = [
     auth: false,
   },
   {
-    path: "/login",
-    element: <Login />,
+    path: "/auth",
+    element: <Auth />,
     auth: false,
   },
   {
     path: "/profile/:id",
     element: <Profile />,
+    auth: true,
+  },
+  {
+    path: "/edit",
+    element: <Edit />,
     auth: true,
   },
   {
