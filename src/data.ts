@@ -4,7 +4,7 @@ import { IPost, ISideBar, Icols } from "./types";
 export const sideBar: ISideBar[] = [
   {
     title: "Моя страница",
-    link: "/",
+    link: "/profile/:id",
     icon: Icons.Home,
   },
   {
@@ -48,7 +48,7 @@ export const firstPost: IPost = {
     avatar:
       "https://parfum-asmodeus.ru/wp-content/uploads/a/1/7/a179b5d0cee30059a54aad7fe3c892ca.jpeg",
   },
-  data: "5 минут назад",
+  date: "5 минут назад",
   text: "Это первый пост в приложении. Он про Японию",
   hashtags: ["#react", "#frontend"],
   images: [
@@ -64,8 +64,8 @@ export const cols: Icols[] = [
   { columns: 2, index: [2, 1, 1] },
   { columns: 2, index: [1, 1, 1, 1] },
   { columns: 3, index: [2, 1, 1, 1, 1] },
-  { columns: 6, index: [1, 1, 1, 1, 1, 1] },
-  { columns: 7, index: [3, 1, 1, 1, 1, 1, 1] },
-  { columns: 8, index: [2, 1, 1, 1, 1, 1, 1, 1] },
-  { columns: 9, index: [1, 1, 1, 1, 1, 1, 1, 1, 1] },
+  { columns: 3, index: [1, 1, 1, 1, 1, 1] },
+  { columns: 3, index: [3, 1, 1, 1, 1, 1, 1] },
+  { columns: 3, index: [2, 1, 1, 1, 1, 1, 1, 1] },
+  { columns: 3, index: [1, 1, 1, 1, 1, 1, 1, 1, 1] },
 ];

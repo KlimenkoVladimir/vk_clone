@@ -1,14 +1,11 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import SideBar from "../SideBar";
 import Posts from "../Posts";
 import { Box, Grid } from "@mui/material";
-import { firstPost } from "../../data";
-import { IPost } from "../../types";
 import AddPost from "../AddPost";
 import Header from "../Header";
 
 const News: FC = () => {
-  const [posts, setPosts] = useState<IPost[]>([firstPost]);
   return (
     <Grid
       container
@@ -19,8 +16,8 @@ const News: FC = () => {
       <Header></Header>
       <SideBar></SideBar>
       <Box sx={{ width: "80%", pt: 5, pl: 10, pr: 30, bgcolor: "#dce1e6" }}>
-        <AddPost setPosts={setPosts}></AddPost>
-        <Posts posts={posts}></Posts>
+        <AddPost></AddPost>
+        <Posts></Posts>
       </Box>
     </Grid>
   );

@@ -93,7 +93,10 @@ const Header: FC = () => {
           <Button onClick={() => signOut(auth)}>Выйти</Button>
         </Box>
       ) : (
-        <Button onClick={() => navigate("/auth")}>Войти</Button>
+        <Box>
+          <Button onClick={() => navigate("/login")}>Войти</Button>
+          <Button onClick={() => navigate("/register")}>Регистрация</Button>
+        </Box>
       )}
     </Box>
   );

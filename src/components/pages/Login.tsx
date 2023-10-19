@@ -1,4 +1,4 @@
-import { Login, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
   TextField,
@@ -20,7 +20,7 @@ import { auth } from "../../firebase";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
-const Auth: FC = () => {
+const Login: FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
@@ -129,7 +129,7 @@ const Auth: FC = () => {
         <Button variant="contained" onClick={handleLogin}>
           Войти
         </Button>
-        <Button variant="outlined" onClick={handleRegister}>
+        <Button variant="outlined" onClick={() => navigate("/register")}>
           Регистрация
         </Button>
       </Stack>
@@ -137,4 +137,4 @@ const Auth: FC = () => {
   );
 };
 
-export default Auth;
+export default Login;

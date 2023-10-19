@@ -2,7 +2,6 @@ import { FC, useState, createContext, useEffect } from "react";
 import { IUser, TypeSetState } from "../../types";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase";
-import { Navigate, useNavigate } from "react-router-dom";
 
 interface IAuthContext {
   user: IUser | null;
@@ -23,6 +22,7 @@ export const AuthProvider: FC<{ children: React.ReactNode }> = ({
           id: user?.uid,
           name: user.displayName || "",
           email: user.email || "",
+          avatar: user.photoURL || "",
         });
       } else {
         setUser(null);

@@ -14,9 +14,16 @@ export interface IUser {
 
 export interface IPost {
   author: IUser;
-  data: string;
+  date: string;
   text?: string;
   hashtags?: string[];
+  images: string[];
+}
+
+export interface IMessage {
+  author: IUser;
+  date: string;
+  text?: string;
   images: string[];
 }
 

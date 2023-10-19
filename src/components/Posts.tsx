@@ -6,23 +6,39 @@ import {
   ImageListItem,
   Button,
 } from "@mui/material";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { IPost } from "../types";
-import { cols } from "../data";
+import { cols, firstPost } from "../data";
 import { useAuth } from "./hooks/useAuth";
+import { getDocs, collection } from "firebase/firestore";
+import { db } from "../firebase";
 
-interface PostsProps {
-  posts: IPost[];
-}
+// interface PostsProps {
+//   posts: IPost[];
+// }
 
-const Posts: FC<PostsProps> = ({ posts }) => {
+const Posts: FC = () => {
   const { user } = useAuth();
+  const [posts, setPosts] = useState<IPost[]>([firstPost]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const query = await getDocs(collection(db, "posts"));
+
+      query.forEach((doc: any) => {
+        setPosts((prev) => [doc.data(), ...prev]);
+      });
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Box sx={{ mt: 3 }}>
       {posts.map((post) => (
         <Box
-          key={post.data}
+          key={post.text}
           sx={{
             mt: 1,
             px: 3,
@@ -35,10 +51,10 @@ const Posts: FC<PostsProps> = ({ posts }) => {
           <Button onClick={() => {}} sx={{ color: "black" }}>
             <Avatar src={post.author.avatar}></Avatar>
             <Typography variant="h6" sx={{ ml: 4 }}>
-              {user?.name || post.author.name}
+              {post.author.name}
             </Typography>
             <Typography variant="subtitle2" sx={{ ml: 2 }}>
-              {post.data}
+              {post.date}
             </Typography>
           </Button>
           <Typography variant="subtitle1">{post.text}</Typography>
@@ -47,7 +63,7 @@ const Posts: FC<PostsProps> = ({ posts }) => {
           </Typography>
           {post.images.length !== 0 && (
             <ImageList
-              sx={{ mt: 2 }}
+              sx={{ mt: 2, maxHeight: "600px", overflow: "hidden" }}
               variant="quilted"
               cols={cols[post.images.length - 1].columns}
             >
@@ -55,7 +71,7 @@ const Posts: FC<PostsProps> = ({ posts }) => {
                 <ImageListItem
                   key={image}
                   cols={cols[post.images.length - 1].index[index]}
-                  sx={{ maxHeight: "300px" }}
+                  sx={{ minHeight: "300px" }}
                 >
                   <img src={image} alt=" " loading="lazy" />
                 </ImageListItem>
