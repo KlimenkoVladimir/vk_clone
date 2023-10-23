@@ -11,7 +11,13 @@ import { FC, useEffect, useState } from "react";
 import { IPost } from "../types";
 import { cols, firstPost } from "../data";
 import { useAuth } from "./hooks/useAuth";
-import { getDocs, collection } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { db } from "../firebase";
 
 // interface PostsProps {
@@ -24,11 +30,17 @@ const Posts: FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const query = await getDocs(collection(db, "posts"));
+      const q = query(collection(db, "posts"), orderBy("date"));
 
-      query.forEach((doc: any) => {
-        setPosts((prev) => [doc.data(), ...prev]);
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+          if (change.type === "added") {
+            setPosts((prev: any) => [change.doc.data(), ...prev]);
+          }
+        });
       });
+
+      return () => unsubscribe(); // Отписка при размонтировании компонента
     };
 
     fetchData();

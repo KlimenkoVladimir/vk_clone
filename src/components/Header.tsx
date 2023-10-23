@@ -90,7 +90,14 @@ const Header: FC = () => {
               }
             ></Avatar>
           </Button>
-          <Button onClick={() => signOut(auth)}>Выйти</Button>
+          <Button
+            onClick={() => {
+              signOut(auth);
+              navigate("/news");
+            }}
+          >
+            Выйти
+          </Button>
         </Box>
       ) : (
         <Box>

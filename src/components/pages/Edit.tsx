@@ -12,9 +12,11 @@ import Header from "../Header";
 import SideBar from "../SideBar";
 import { useAuth } from "../hooks/useAuth";
 import { updateProfile } from "firebase/auth";
-import { auth, storage } from "../../firebase";
+import { auth, db, storage } from "../../firebase";
 import { PhotoCamera } from "@mui/icons-material";
 import { uploadBytes, getDownloadURL, ref } from "@firebase/storage";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const Edit: FC = () => {
   const { user } = useAuth();
@@ -26,9 +28,10 @@ const Edit: FC = () => {
   const [error, setError] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
+    if (e.target.files) {
       setSelectedFile(e.target.files[0]);
     }
   };
@@ -39,7 +42,12 @@ const Edit: FC = () => {
       await updateProfile(auth.currentUser!, {
         displayName: userData.name,
       });
+      await updateDoc(doc(db, "users", auth.currentUser?.uid!), {
+        name: userData.name,
+      });
       if (selectedFile) {
+        console.log("ok");
+
         const storageRef = ref(
           storage,
           `avatars/${user?.id}/${selectedFile.name}`
@@ -50,11 +58,17 @@ const Edit: FC = () => {
         await updateProfile(auth.currentUser!, {
           photoURL: downloadURL,
         });
+        await updateDoc(doc(db, "users", auth.currentUser?.uid!), {
+          avatar: downloadURL,
+        });
       }
+      navigate("/news");
     } catch (error: any) {
       error.message && setError(error.message);
+      console.log("error");
     }
   };
+  console.log(user);
 
   return (
     <Grid
@@ -108,24 +122,7 @@ const Edit: FC = () => {
           onChange={(e) => setUserData({ ...userData, name: e.target.value })}
           sx={{ width: "30%", mt: 2 }}
         />
-        {/* <TextField
-          label="Email"
-          variant="outlined"
-          size="small"
-          value={userData.email}
-          onChange={(e) => setUserData({ ...userData, email: e.target.value })}
-          sx={{ width: "30%", mt: 2 }}
-        />
-        <TextField
-          label="Email"
-          variant="outlined"
-          size="small"
-          value={userData.email}
-          onChange={(e) =>
-            setUserData({ ...userData, password: e.target.value })
-          }
-          sx={{ width: "30%", mt: 2 }}
-        /> */}
+
         {error && (
           <Alert severity="error" sx={{ mt: 2 }}>
             {error}

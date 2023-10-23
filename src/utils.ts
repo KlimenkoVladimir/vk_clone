@@ -1,3 +1,6 @@
+import { updateDoc, doc, arrayUnion } from "firebase/firestore";
+import { db } from "./firebase";
+
 export const colsList = (length: number) => {
   switch (length) {
     case 1:
@@ -37,13 +40,13 @@ export function getCurrentTime() {
   return formattedDate;
 }
 
-// export const cols = (length: number, index: number) => {
-//   switch (length) {
-//     case 1:
-//       return 1;
-//     case 2 || 3 || 4:
-//       return 2;
-//     default:
-//       return 3;
-//   }
-// };
+export async function addFriend(user1: string, user2: string) {
+  await updateDoc(doc(db, "friends", user1), {
+    friends: arrayUnion(user2),
+  });
+  console.log("1");
+
+  await updateDoc(doc(db, "friends", user2), {
+    friends: arrayUnion(user1),
+  });
+}

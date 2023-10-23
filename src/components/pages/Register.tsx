@@ -17,9 +17,10 @@ import {
   updateProfile,
 } from "firebase/auth";
 import React, { FC, SyntheticEvent, useEffect, useState } from "react";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 
 const Login: FC = () => {
   const { user } = useAuth();
@@ -42,6 +43,14 @@ const Login: FC = () => {
 
       await updateProfile(userCredential.user, {
         displayName: userData.name,
+      });
+      await setDoc(doc(db, "users", userCredential.user.uid!), {
+        id: userCredential.user.uid,
+        name: userData.name,
+        email: userData.email,
+      });
+      await setDoc(doc(db, "friends", userCredential.user.uid!), {
+        friends: [],
       });
     } catch (error: any) {
       error.message && setError(error.message);
@@ -124,10 +133,10 @@ const Login: FC = () => {
         </Alert>
       )}
       <Stack spacing={2} direction="row" sx={{ mt: 4 }}>
-        <Button variant="contained" onClick={() => navigate("/login")}>
+        <Button variant="outlined" onClick={() => navigate("/login")}>
           Войти
         </Button>
-        <Button variant="outlined" onClick={handleRegister}>
+        <Button variant="contained" onClick={handleRegister}>
           Регистрация
         </Button>
       </Stack>
